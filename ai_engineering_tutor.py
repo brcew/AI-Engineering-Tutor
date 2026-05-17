@@ -1,3 +1,4 @@
+import os
 import json
 from groq import Groq
 import tiktoken
@@ -6,7 +7,7 @@ import tiktoken
 # CONFIG
 # =========================
 
-API_KEY = "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"
+API_KEY = os.getenv("GROQ_API_KEY")
 
 client = Groq(api_key=API_KEY)
 
@@ -19,7 +20,14 @@ MODEL = "llama-3.3-70b-versatile"
 messages = [
     {
         "role": "system",
-        "content": "You are an AI Engineering tutor"
+        "content": (
+            "You are an AI Engineering tutor helping beginner-level students "
+            "learn AI and Python from scratch. "
+            "Explain concepts simply and clearly. "
+            "Use step-by-step explanations when possible. "
+            "If the student asks something too advanced, guide them to learn prerequisites first. "
+            "Keep responses focused and practical."
+        )
     }
 ]
 
@@ -68,6 +76,11 @@ while True:
         save_conversation()
         print("Goodbye!")
         break
+
+    # Skip empty input
+    if not user_input.strip():
+        print("Please type something.")
+        continue
 
     # Add user message
     messages.append({

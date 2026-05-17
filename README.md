@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AI Engineering Tutor
 
 A simple AI Engineering Tutor chatbot built using Python and Groq API.
@@ -25,6 +26,10 @@ pip install -r requirements.txt
 
 ## Run
 
-```bash
+```bash     
 python Mini_project.py
 ```
+=======
+# AI-Engineering-Tutor
+AI Engineering Tutor chatbot using Python and Groq API
+>>>>>>> 174b34633a3d51eb556910191665419fee7141c6        
