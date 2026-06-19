@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Engineering Tutor</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <h1>AI Engineering Tutor</h1>
+                </div>
+                <div class="header-controls">
+                    <div class="token-counter">
+                        <i class="fas fa-calculator"></i>
+                        <span id="tokenCount">0 tokens</span>
+                    </div>
+                    <button id="clearChat" class="btn btn-secondary" title="Clear Chat">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <button id="exportChat" class="btn btn-secondary" title="Export Chat">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button id="settingsBtn" class="btn btn-secondary" title="Settings">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Chat Container -->
+            <div class="chat-container">
+                <div id="chatMessages" class="chat-messages">
+                    <!-- Welcome Message -->
+                    <div class="message-group system-message">
+                        <div class="message-content">
+                            <div class="avatar system-avatar">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="message-bubble system-bubble">
+                                <h3>Welcome to AI Engineering Tutor! 🎓</h3>
+                                <p>I'm here to help you learn AI and Python from scratch. I'll explain concepts simply and guide you step-by-step.</p>
+                                <p>Ask me anything about:</p>
+                                <ul>
+                                    <li>Python programming basics</li>
+                                    <li>AI and Machine Learning concepts</li>
+                                    <li>Data structures and algorithms</li>
+                                    <li>Best practices and practical examples</li>
+                                </ul>
+                                <p><strong>Tip:</strong> If you ask something too advanced, I'll guide you to learn the prerequisites first!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Typing Indicator -->
+                <div id="typingIndicator" class="typing-indicator" style="display: none;">
+                    <div class="message-content">
+                        <div class="avatar tutor-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="typing-bubble">
+                            <div class="typing-dots">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="chat-input-container">
+                <div class="chat-input">
+                    <div class="input-group">
+                        <textarea 
+                            id="messageInput" 
+                            placeholder="Ask me anything about AI or Python programming..."
+                            rows="1"
+                        ></textarea>
+                        <button id="sendBtn" class="send-btn" disabled>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="input-footer">
+                        <div class="quick-actions">
+                            <button class="quick-btn" data-message="Explain what is machine learning?">
+                                <i class="fas fa-brain"></i>
+                                Machine Learning
+                            </button>
+                            <button class="quick-btn" data-message="How do I start learning Python?">
+                                <i class="fab fa-python"></i>
+                                Python Basics
+                            </button>
+                            <button class="quick-btn" data-message="What are neural networks?">
+                                <i class="fas fa-network-wired"></i>
+                                Neural Networks
+                            </button>
+                        </div>
+                        <div class="input-info">
+                            <span class="api-status" id="apiStatus">Ready</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Settings Modal -->
+        <div id="settingsModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Settings</h2>
+                    <button class="close-btn" id="closeSettings">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="setting-group">
+                        <label for="modelSelect">Model</label>
+                        <select id="modelSelect">
+                            <option value="llama-3.3-70b-versatile">Llama 3.3 70B (Versatile)</option>
+                            <option value="llama-3.1-70b-versatile">Llama 3.1 70B (Versatile)</option>
+                            <option value="mixtral-8x7b-32768">Mixtral 8x7B</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="autoScroll" checked>
+                            <span class="checkmark"></span>
+                            Auto-scroll to new messages
+                        </label>
+                    </div>
+                    <div class="setting-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="showTokens" checked>
+                            <span class="checkmark"></span>
+                            Show token count
+                        </label>
+                    </div>
+                    <div class="info-box">
+                        <i class="fas fa-info-circle"></i>
+                        <div>
+                            <strong>Note:</strong> API key is configured on the server. 
+                            Make sure your <code>.env</code> file contains a valid <code>GROQ_API_KEY</code>.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="saveSettings" class="btn btn-primary">Save Settings</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Thinking...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

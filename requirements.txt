@@ -1,2 +1,3 @@
 groq
 tiktoken
+python-dotenv
