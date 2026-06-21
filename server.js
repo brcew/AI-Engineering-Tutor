@@ -103,8 +103,8 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-app.listen(PORT, () => {
-    console.log(`🚀 AI Engineering Tutor server running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 AI Engineering Tutor server running on port ${PORT}`);
     console.log(`📝 API Key configured: ${!!process.env.GROQ_API_KEY ? '✅' : '❌'}`);
     console.log(`🤖 Default model: ${process.env.DEFAULT_MODEL || 'llama-3.3-70b-versatile'}`);
 });
