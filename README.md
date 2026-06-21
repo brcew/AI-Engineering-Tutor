@@ -1,3 +1,12 @@
+---
+title: AI Engineering Tutor
+emoji: 🎓
+colorFrom: indigo
+colorTo: purple
+sdk: docker
+pinned: false
+---
+
 # AI Engineering Tutor 🤖🎓
 
 A comprehensive AI-powered tutoring system that helps beginners learn AI and Python concepts through interactive conversations. Available as both a CLI tool and a modern web interface!
